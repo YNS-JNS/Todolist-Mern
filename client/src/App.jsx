@@ -6,7 +6,7 @@ const App = () => {
 
   useEffect(() => {
 
-    fetch("http://localhost:8000/test").then(res => res.json())
+    fetch("http://localhost:8000/api/task").then(res => res.json())
       .then(data => {
         console.log(data)
         setData(data)
