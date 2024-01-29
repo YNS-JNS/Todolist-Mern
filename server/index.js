@@ -1,7 +1,9 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
-const db = require("./app/models")
+const db = require("./app/models");
+const taskRouter = require("./app/routes/task.routes");
+
 // ________________________________________________________________________________________________
 
 const app = express();
@@ -15,14 +17,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(logger('dev'));
 
 // ________________________________________________________________________________________________
-
+// CORS:
 const corsOptions = {
     origin: "http://localhost:5173"
 }
 
 app.use(cors(corsOptions));
-// ________________________________________________________________________________________________
 
+// ________________________________________________________________________________________________
 // Connect to MongoDB Atlas:
 
 
@@ -34,14 +36,10 @@ db.mongoose.connect(db.url).then(() => {
 });
 
 // ________________________________________________________________________________________________
-
-// Testing:
-app.get("/test", (req, res) => {
-    res.json({ data: "Data from Server" });
-})
-
-// ________________________________________________________________________________________________
 // Routes:
+
+app.use("/api/task", taskRouter);
+
 
 // ________________________________________________________________________________________________
 
