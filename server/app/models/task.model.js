@@ -9,7 +9,7 @@ const TaskSchema = Schema(
             type: String,
             required: [true, 'Task text is required!'],
             trim: true,
-            minlength: [1, 'Too short task text!'],
+            minlength: [2, 'Too short task text!'],
             maxlength: [500, 'Too long task text!'],
         },
         done: {
