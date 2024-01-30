@@ -1,15 +1,12 @@
 const db = require("../models");
 
-const TaskModel = db.tasks;
+const Tasks = db.tasks;
+
 
 // -------  POST Request : Create a new task ------- //
 exports.createTask = async (req, res) => {
-  
   try {
-    // Create a new task instance
-    const newTask = new TaskModel(req.body);
-
-    // Save the task to the database
+    const newTask = new Tasks(req.body);
     const savedTask = await newTask.save();
 
     res.status(201).json({
@@ -28,21 +25,24 @@ exports.createTask = async (req, res) => {
 
 // -------  GET Request : Get All tasks ------- //
 exports.getTasks = async (req, res) => {
-    try {
-      const tasks = await TaskModel.find({}).sort({ createdAt: -1 });
-      // const tasks = await TaskModel.find({})
-  
-      try {
-        res.status(200).json({
-          message: "Get all tasks successfully.",
-          tasks: tasks,
-        });
-      } catch (error) {
-        res.status(500).json({ error: error.message });
-      }
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+  try {
+    // Find and sort todos with creating time
+    const tasks = await Tasks.find({}).sort({ createdAt: -1 });
+    
+    if (!tasks) {
+      return res.status(500).json({ error: error.message });
+    } else {
+      // res.send(tasks);
+      res.status(200).json({
+        tasks: tasks
+      });
     }
+
+  } catch (error) {
+    res.status(500).json({ 
+      error: error.message 
+    });
+  }
 };
 // -------------------------------------------- //
 
@@ -51,7 +51,7 @@ exports.getTasks = async (req, res) => {
 exports.getTask = async (req, res) => {
     try {
       const { id: taskId } = req.params;
-      const task = await TaskModel.findOne({ _id: taskId });
+      const task = await Tasks.findOne({ _id: taskId });
   
       if (!task) {
         return res.status(404).json({ msg: `No task with id: ${taskId}` });
@@ -66,15 +66,13 @@ exports.getTask = async (req, res) => {
     }
 };
 // -------------------------------------------- //
-  
+
 
 // -------  PUT Request : Update a task ------- //
 exports.updateTask = async (req, res) => {
     try {
       const { id: taskId } = req.params;
-      const task = await TaskModel.findByIdAndUpdate(taskId, req.body, { new: true, runValidators: true });
-
-      console.log('Task to update: '+task);
+      const task = await Tasks.findByIdAndUpdate(taskId, req.body, { new: true, runValidators: true });
 
       if (!task) {
         return res.status(404).json({ msg: `No task with id: ${taskId}` });
@@ -96,7 +94,7 @@ exports.updateTask = async (req, res) => {
 exports.deleteTask = async (req, res) => {
     try {
       const { id: taskId } = req.params;
-      const task = await TaskModel.findByIdAndDelete(taskId);
+      const task = await Tasks.findByIdAndDelete(taskId);
   
       if (!task) {
         return res.status(404).json({ msg: `No task with id: ${taskId}` });
