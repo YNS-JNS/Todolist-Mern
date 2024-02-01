@@ -1,13 +1,41 @@
 const express = require("express");
+const {
+    idValidator,
+    createTaskValidator,
+    updateTaskValidator
+} = require("../middlewares/validations/taskValidator");
 const taskController = require("../controllers/task.controller");
 const router = express.Router();
 
+/**
+ * @desc Create a new task
+*/
+router.post("/new", createTaskValidator, taskController.createTask);
 
-router.post("/new", taskController.createTask);
-router.get("/tasks", taskController.getTasks);
-router.get("/:id", taskController.getTask);
-router.patch("/update/:id", taskController.updateTask);
-router.delete("/delete/:id", taskController.deleteTask);
+/**
+ * @desc fetch tasks
+*/
+router.get("/", taskController.getTasks);
+
+/**
+ * @desc Get done tasks
+*/
+router.get("/done", taskController.getDoneTask);
+
+/**
+ * @desc fetch task by ID
+*/
+router.get("/:id", idValidator, taskController.getTask);
+
+/**
+ * @desc Update task by ID
+*/
+router.patch("/update/:id", idValidator, updateTaskValidator, taskController.updateTask);
+
+/**
+ * @desc Delete task by ID
+*/
+router.delete("/delete/:id", idValidator, taskController.deleteTask);
 
 
 // Exporting router

@@ -12,8 +12,9 @@ const checkingId = (id) => {
     return idSchema.validate(id);
 };
 
+// * Custom middleware
 // Todo: Checking id of task : is valid
-exports.idValidator = (res, req, next) => {
+exports.idValidator = (req, res, next) => {
 
     const { error: idError } = checkingId(req.params.id)
 
@@ -49,7 +50,7 @@ const createNewTask = (data) => {
     return taskSchema.validate(data);
 };
 
-exports.createTaskValidator = (res, req, next) => {
+exports.createTaskValidator = (req, res, next) => {
 
     const { error } = createNewTask(req.body);
 
@@ -83,10 +84,15 @@ const updateTask = (data) => {
 exports.updateTaskValidator = (req, res, next) => {
 
     const { error: dataError } = updateTask(req.body, { abortEarly: false });
-
+    /*
+    By using { abortEarly: false } with validate, you'll get all validation errors at once, rather than stopping at the first error. 
+    You can then map these errors to inform the user of each invalid field.
+    This approach gives you the flexibility to manage more detailed error messages for each field. 
+    You can customize the error message for each field in your JSON response. 
+    */
     if (dataError) {
-        
-        const errorMessage = dataError.details.map( detail => detail.message );
+
+        const errorMessage = dataError.details.map(detail => detail.message);
         return res.status(400).json(
             {
                 status: 400,
