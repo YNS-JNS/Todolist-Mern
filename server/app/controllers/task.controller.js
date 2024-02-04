@@ -70,7 +70,7 @@ exports.getTasks = async (req, res) => {
     const tasks = await Task.find(condition).sort({ createdAt: -1 });
     // const Tasks = await Task.find({});
 
-    if (!tasks) {
+    if (!tasks || tasks.length === 0) {
       return res.status(404).json({
         status: 404,
         message: "No tasks found !",
@@ -241,37 +241,37 @@ exports.deleteTask = async (req, res) => {
  * @returns {Promise<void>} - A promise representing the completion of the function.
 */
 
-exports.getDoneTask = async (req, res) => {
+// exports.getDoneTask = async (req, res) => {
 
-  try {
+//   try {
 
-    const doneTasks = await Task.find({ done: true });
+//     const doneTasks = await Task.find({ done: true });
 
-    if (!doneTasks || doneTasks.length === 0) {
-      return res.status(404).json({
-        status: 404,
-        message: "No tasks found !",
-      });
-    }
+//     if (!doneTasks || doneTasks.length === 0) {
+//       return res.status(404).json({
+//         status: 404,
+//         message: "No tasks found !",
+//       });
+//     }
 
-    return res.status(200).json({
-      status: 200,
-      message: "Successfully retrieved tasks .",
-      totalItems: doneTasks.length,
-      data: doneTasks,
-    });
+//     return res.status(200).json({
+//       status: 200,
+//       message: "Successfully retrieved tasks .",
+//       totalItems: doneTasks.length,
+//       data: doneTasks,
+//     });
 
-  } catch (error) {
+//   } catch (error) {
 
-    console.error("Error searching done tasks:", error);
+//     console.error("Error searching done tasks:", error);
 
-    res.status(500).json({
-      status: 500,
-      message: "Some error occured while searching the tasks",
-      error: error.message,
-    });
-  }
-};
+//     res.status(500).json({
+//       status: 500,
+//       message: "Some error occured while searching the tasks",
+//       error: error.message,
+//     });
+//   }
+// };
 
 /* ____________________________________________________________________ */
 
@@ -282,11 +282,11 @@ exports.getDoneTask = async (req, res) => {
  * @returns {Promise<void>} - A promise representing the completion of the function.
 */
 
-exports.deleteAllTasks= async (req, res) => {
+exports.deleteAllTasks = async (req, res) => {
 
   try {
 
-   const deletedTasks = await Task.deleteMany({});
+    const deletedTasks = await Task.deleteMany({});
 
     return res.status(200).json({
       status: 200,
@@ -301,6 +301,41 @@ exports.deleteAllTasks= async (req, res) => {
     res.status(500).json({
       status: 500,
       message: "Some error occured while removing the tasks",
+      error: error.message,
+    });
+  }
+};
+
+/* ____________________________________________________________________ */
+
+/**
+ * Retrieve tasks marked as completed.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Promise<void>} - A promise representing the completion of the function.
+*/
+exports.getCompletedTasks = async (req, res) => {
+  try {
+    const completedTasks = await Task.find({ status: 'completed' });
+
+    if (!completedTasks || completedTasks.length === 0) {
+      return res.status(404).json({
+        status: 404,
+        message: "No completed tasks found!",
+      });
+    }
+
+    res.status(200).json({
+      status: 200,
+      message: "Successfully retrieved completed tasks.",
+      totalItems: completedTasks.length,
+      data: completedTasks,
+    });
+  } catch (error) {
+    console.error("Error retrieving completed tasks:", error);
+    res.status(500).json({
+      status: 500,
+      message: "Some error occurred while retrieving the completed tasks.",
       error: error.message,
     });
   }
