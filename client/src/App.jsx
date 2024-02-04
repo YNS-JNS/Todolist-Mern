@@ -1,23 +1,11 @@
-import { useEffect, useState } from "react"
+import Tasks from "./components/Tasks";
 
 const App = () => {
 
-  const [data, setData] = useState("");
-
-  useEffect(() => {
-
-    fetch("http://localhost:8000/api/task").then(res => res.json())
-      .then(data => {
-        console.log(data)
-        setData(data)
-      })
-
-  }, [])
-
   return (
-    <div>
-      <h1> {data.data} </h1>
-    </div>
+    <>
+      <Tasks />
+    </>
   )
 }
 

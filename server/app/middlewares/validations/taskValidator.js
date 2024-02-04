@@ -42,8 +42,13 @@ const createNewTask = (data) => {
 
     const taskSchema = Joi.object(
         {
-            task: Joi.string().required().min(2).max(500),
-            done: Joi.boolean()
+            title: Joi.string().required().min(2).max(40),
+            priority: Joi.string().valid('important', 'not-important'),
+            status: Joi.string().valid('inProgress', 'pending', 'completed'),
+            description: Joi.string().required().min(2).max(400),
+            removedAt: Joi.date(),
+            createdBy: Joi.string(),
+            deadline: Joi.date()
         }
     );
 
@@ -73,8 +78,13 @@ const updateTask = (data) => {
 
     const updateTaskSchema = Joi.object(
         {
-            task: Joi.string().min(2).max(500),
-            done: Joi.boolean()
+            title: Joi.string().min(2).max(40),
+            priority: Joi.string().valid('important', 'not-important'),
+            status: Joi.string().valid('inProgress', 'pending', 'completed'),
+            description: Joi.string().min(2).max(400),
+            removedAt: Joi.date(),
+            createdBy: Joi.string(),
+            deadline: Joi.date()
         }
     ).min(1); // * At least one field must be present
 
