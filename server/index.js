@@ -19,7 +19,8 @@ app.use(logger('dev'));
 // ________________________________________________________________________________________________
 // CORS:
 const corsOptions = {
-    origin: "http://localhost:5173"
+    // origin: "http://localhost:5173"
+    origin: ["http://localhost:5173", "http://localhost:3000"]
 }
 
 app.use(cors(corsOptions));
@@ -38,7 +39,7 @@ db.mongoose.connect(db.url).then(() => {
 // ________________________________________________________________________________________________
 // Routes:
 
-app.use("/api/task", taskRouter);
+app.use("/api/tasks", taskRouter);
 
 
 // ________________________________________________________________________________________________
