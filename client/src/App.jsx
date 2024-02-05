@@ -1,11 +1,11 @@
-import Tasks from "./components/Tasks";
+import Home from '../src/components/Home';
 
 const App = () => {
 
   return (
-    <>
-      <Tasks />
-    </>
+    <div className="bg-slate-700 font-display">
+      <Home />
+    </div>
   )
 }
 

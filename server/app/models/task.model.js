@@ -40,7 +40,8 @@ const TaskSchema = Schema(
             // required: true
         },
         deadline: {
-            type: Date
+            type: Date,
+            default: Date.now
         },
         // done: {
         //     type: Boolean,
