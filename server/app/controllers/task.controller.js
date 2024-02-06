@@ -53,20 +53,27 @@ exports.getTasks = async (req, res) => {
   try {
 
     // * Query: ---------------------------
-    const { task } = req.query;
+    const { title, status, priority } = req.query;
 
     const condition = {};
 
     // * Nb: $options: "i" makes the search case-insensitive.
 
-    // * Filter by task
-    if (task) {
-      condition.task = { $regex: new RegExp(task), $options: "i" };
+    // * Searching by task
+    if (title) {
+      condition.title = { $regex: new RegExp(title), $options: "i" };
     }
 
-    // ------------------------------------
+    //  feltring by task status
+    if (status) {
+      condition.status = status;
+    }
+    //  feltring by task priority
+    if (priority) {
+      condition.priority = priority;
+    }
 
-    // * Find and sort tasks by creation time
+    // * Find tasks that match the condition and sort them by creation time
     const tasks = await Task.find(condition).sort({ createdAt: -1 });
     // const Tasks = await Task.find({});
 
