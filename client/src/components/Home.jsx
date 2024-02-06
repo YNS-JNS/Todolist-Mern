@@ -119,6 +119,54 @@ const Home = () => {
   }
 
   /* ________________________________________________ */
+
+  // Todo: Fetching tasks by title query 
+  // const fetchTasksByQuery = async (title, status, priority) => {
+  const fetchTasksByTitle = async (title) => {
+    try {
+      // const res = await axios.get(`http://localhost:8000/api/tasks?title=${title}&status=${status}&priority=${priority}`);
+      const res = await axios.get(`http://localhost:8000/api/tasks?title=${title}`);
+      const responseData = res.data;
+
+      if (responseData.status === 200 && responseData.data) {
+        const tasks = responseData.data;
+        setTasks(tasks);
+        console.log("Tasks from query: ", tasks);
+      } else {
+        console.log('Invalid response data:', responseData);
+      }
+    } catch (error) {
+      console.log("Error getting tasks by title", error);
+      // setError('An error occurred while fetching tasks.');
+      return null;
+    }
+  }
+
+  /* ________________________________________________ */
+
+  // Todo: Filtering tasks by  status and priority
+  // const fetchTasksByQuery = async (title, status, priority) => {
+  const filteringTasks = async (status, priority) => {
+    try {
+      const res = await axios.get(`http://localhost:8000/api/tasks?status=${status}&priority=${priority}`);
+      const responseData = res.data;
+
+      if (responseData.status === 200 && responseData.data) {
+        const tasks = responseData.data;
+        setTasks(tasks);
+        console.log("Tasks from query: ", tasks);
+      } else {
+        console.log('Invalid response data:', responseData);
+      }
+    } catch (error) {
+      console.log("Error getting tasks by filtering", error);
+      // setError('An error occurred while fetching tasks.');
+      return null;
+    }
+  }
+
+  /* ________________________________________________ */
+
   // Console section:
   console.log("All tasks: ", tasks)
   // console.log(tasks.data)
@@ -130,7 +178,10 @@ const Home = () => {
 
       {/* ________________ Section Searching ________________ */}
       <div className='flex justify-center bg-slate-700 px-10 py-8'>
-        <SearchBar />
+        <SearchBar
+          fetchTasksByTitle={fetchTasksByTitle}
+          filteringTasks={filteringTasks}
+        />
       </div>
 
       {/*  ________________ Section Add Task ________________  */}
@@ -140,20 +191,28 @@ const Home = () => {
 
       {/*  ________________ Section Card Task ________________  */}
       <div className='grid grid-cols-3 gap-3 px-10 py-8 pb-14'>
+        {/* <Suspense fallback={<Loading />} > */}
         {tasks && tasks.map((task, index) => {
           return (
+
             <TaskCard
               key={index}
               task={task}
               handleDeleteTask={handleDeleteTask}
               handleUpdateTask={handleUpdateTask}
             />
+
           )
         })}
+        {/* </Suspense> */}
       </div>
 
     </div>
   )
 }
 
-export default Home
+export default Home;
+
+// function Loading() {
+//   return <h2>🌀 Loading...</h2>;
+// }
