@@ -1,16 +1,17 @@
 import Filter from './Filter'
 import SearchForm from './SearchForm'
 
-const SearchBar = () => {
+const SearchBar = ({fetchTasksByTitle, filteringTasks}) => {
+
     return (
 
         <div className="w-full flex justify-between">
-            <div className="w-1/4">
-                <Filter />
+            <div className="w-2/5">
+                <Filter filteringTasks={filteringTasks} />
             </div>
 
-            <div className=' w-3/4 flex justify-end'>
-                <SearchForm />
+            <div className=' w-3/5 flex justify-end'>
+                <SearchForm fetchTasksByTitle={fetchTasksByTitle} />
             </div>
         </div>
     )
