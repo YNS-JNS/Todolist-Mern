@@ -37,7 +37,7 @@ yarn start
 ```
 
 ## Author
-- ***[Hossam batouli](https://github.com/mibanas).***
+- ***[hossam batouli](https://github.com/hossam-dev14).***
 - ***[AIT M'BAREK Youness](https://github.com/YNS-JNS).***
 
 ## Learn More
