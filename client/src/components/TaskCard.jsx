@@ -5,6 +5,7 @@ import Priority from './Priority';
 import Status from './Status';
 import ButtonUpdate from './ButtonUpdate';
 import TaskDetails from './TaskDetails';
+import ReusableButton from './ReusableButton';
 
 const TaskCard = ({ task, handleDeleteTask, handleUpdateTask }) => {
 
@@ -62,7 +63,7 @@ const TaskCard = ({ task, handleDeleteTask, handleUpdateTask }) => {
         // hover:bg-gray-400 
         <>
             <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-900 cursor-pointer drop-shadow-2xl h-70"
-            onDoubleClick={handleDoubleClick}
+                onDoubleClick={handleDoubleClick}
             >
                 <Priority priority={priority} />
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white hover:pointer">
@@ -83,8 +84,18 @@ const TaskCard = ({ task, handleDeleteTask, handleUpdateTask }) => {
 
                 <div className='mt-4 flex justify-between'>
                     {/* Button for delete  */}
-                    <ButtonDelete idTask={id} handleDeleteTask={handleDeleteTask} />
-                    <ButtonUpdate handleShowPopup={handleShowPopup} />
+                    {/* <ButtonDelete idTask={id} handleDeleteTask={handleDeleteTask} /> */}
+                    <ReusableButton
+                        title="Remove"
+                        onClick={() => handleDeleteTask(id)}
+                        color="red"
+                    />
+                    {/* <ButtonUpdate handleShowPopup={handleShowPopup} /> */}
+                    <ReusableButton
+                        title="Update"
+                        onClick={handleShowPopup}
+                        color="blue"
+                    />
                     <span className="bg-blue-100 text-blue-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400"
                         title="created at"
                     >
@@ -115,21 +126,21 @@ const TaskCard = ({ task, handleDeleteTask, handleUpdateTask }) => {
                 </div>
             </div>}
 
-             {/* Condition pour afficher le popup detail */}
-             {showPopupDetail && <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-900 bg-opacity-50">
+            {/* Condition pour afficher le popup detail */}
+            {showPopupDetail && <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-900 bg-opacity-50">
                 {/* <div className="bg-slate-700 rounded shadow-lg p-4"> */}
-                    {/* Contenu du popup detail task */}
-                    <TaskDetails
-                        task={selectedTask} // Pass the selected task to the GetMemo component
-                        // handleUpdateTask={handleUpdateTask} // Pass the handleUpdateTask function
-                    />
-                    <button className="absolute top-0 right-0 mt-2 mr-2 text-gray-600 hover:text-gray-900"
-                        onClick={handleClosePopup}
-                    >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
+                {/* Contenu du popup detail task */}
+                <TaskDetails
+                    task={selectedTask} // Pass the selected task to the GetMemo component
+                // handleUpdateTask={handleUpdateTask} // Pass the handleUpdateTask function
+                />
+                <button className="absolute top-0 right-0 mt-2 mr-2 text-gray-600 hover:text-gray-900"
+                    onClick={handleClosePopup}
+                >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
                 {/* </div> */}
             </div>}
 
